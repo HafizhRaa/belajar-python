@@ -5,7 +5,7 @@ import pytz
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = "8903391894:AAG4FHPJismua_fNLSp2mq3QhoRKmkEkwEc"
+from config import TOKEN, API_KEY
 
 # command /start
 async def  start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -36,13 +36,9 @@ async def cuaca(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Format: /cuaca [nama kota]\nContoh: /cuaca Jakarta")
         return
     kota = " ".join(context.args)
-    API_KEY = "9164e302457789b15255a72ec2b5c077" # API KEY
     url = f"https://api.openweathermap.org/data/2.5/weather?q={kota}&appid={API_KEY}&units=metric&lang=id"
-    
-    
     response = requests.get(url)
     data = response.json()
-    
     if data["cod"] != 200:
         await update.message.reply_text(f"Kota '{kota}' tidak ditemukan!")
         return
@@ -78,7 +74,7 @@ async def waktu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 🔴 WIT  (Jayapura) : {jam_wit}
 """)
     
-app = ApplicationBuilder() .token("8903391894:AAG4FHPJismua_fNLSp2mq3QhoRKmkEkwEc") .build()
+app = ApplicationBuilder().token(TOKEN) .build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("help", help))
